@@ -2,11 +2,12 @@ package easyroute
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 )
 
 type Request struct {
@@ -110,7 +111,7 @@ func (r *Request) Redirect(forwardTo string) {
 func (r *Request) Json(status int, v interface{}) {
 	b, err := json.Marshal(v)
 	if err != nil {
-		fmt.Println("error:", err)
+		log.Errorf("Error marshaling value to json: %s", err.Error())
 	} else {
 		r.sendJson(r.writer, status, b)
 	}
